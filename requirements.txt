@@ -1,0 +1,8 @@
+pypdf
+langchain
+chromadb # Vector storage
+pytest
+langchain-openai
+langchain-community
+langchain-chroma 
+python-dotenv
