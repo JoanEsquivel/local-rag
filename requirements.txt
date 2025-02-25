@@ -2,7 +2,9 @@ pypdf
 langchain
 chromadb # Vector storage
 pytest
+pytest-asyncio
 langchain-openai
 langchain-community
 langchain-chroma 
 python-dotenv
+ragas
