@@ -8,8 +8,9 @@ from dotenv import load_dotenv
 import pytest
 import json
 
-# When testing context precision using ragas, you're evaluating how well a retrieval-augmented generation (RAG) system selects and ranks relevant context passages for a given query.
-# Precision is crucial because it ensures that the retrieved information directly supports the answer without irrelevant or misleading data.
+# Definition: Measures how much of the retrieved context is actually relevant to answering the question.
+# High Precision = Most of the retrieved contexts are useful for answering the query.
+# Low Precision = Many of the retrieved contexts are irrelevant or only partially relevant.
 
 
 
@@ -113,5 +114,6 @@ async def test_context_precision():
     score = await context_precision.single_turn_ascore(sample)
     log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nScore: {score}"
     print(log)
+    assert score >= 0.5
   
 
