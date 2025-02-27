@@ -8,6 +8,11 @@ from dotenv import load_dotenv
 import pytest
 import json
 
+# When testing context precision using ragas, you're evaluating how well a retrieval-augmented generation (RAG) system selects and ranks relevant context passages for a given query.
+# Precision is crucial because it ensures that the retrieved information directly supports the answer without irrelevant or misleading data.
+
+
+
 
 #User Input -> Query
 # Response -> Response
@@ -20,7 +25,59 @@ import json
 # question 2 = "What are the common vocalizations and their meanings in cat communication?" - Page 29 -30 
 # question 3 = "What are the key physical characteristics of domestic cats" - Page 26
 
-question = "TBD"
+# Aspects to consider when testing context precision:
+# 1- Retrieval query: It has to be optimized for the question - Think about the final user of the RAG system
+
+
+# !!Factually Grounded Questions
+#question = "What are the general physical characteristics of all cats, not specific breeds?"
+# Score 0.49999
+#Score (0.50) means the response was only 50% aligned with the retrieved context.
+#Issue: The system retrieved both general traits and breed-specific traits, which diluted precision.
+#Fix: Improve retrieval to exclude breed-specific chunks, and adjust response to only use retrieved data.
+
+# Ambiguous Questions with Multiple Possible Answers
+#question = "What is the most popular cat breed?"
+
+# Niche Domain-Specific Queries
+#question = "What are the common health issues in cats?"
+
+# Temporal Context Questions
+#question = "How long do domestic cats typically live?"
+
+# Confusable Entities
+#question = "What is the function of a cat’s whiskers?"
+
+# Comparative Questions
+#question = "How do domestic cats and wild cats differ in behavior?"
+
+# Complex Multi-Hop Queries
+#question = "How does a cat’s sense of smell compare to its sense of sight?"
+
+# Context Filtering in Multi-Document Retrieval
+#question = "What is the role of the tail in a cat’s balance?"
+
+# !!Counterfactual or Misleading Questions
+#question = "Do all white cats have blue eyes? Retrieve facts specifically about eye color variation in white cats."
+# Score 0.6388888888675925
+#The score of 0.6389 indicates moderate precision, meaning that while the retrieved contexts were somewhat relevant, they weren’t fully optimized for the question.
+
+
+
+# !!Step-by-Step Instruction Retrieval
+#question = "How can I train my cat to use a litter box?"
+
+#Score 0.0 
+# Irrelevant or Partially Relevant Chunks
+#   The retrieved chunks mostly discussed litter box types, materials, and maintenance rather than step-by-step training techniques.
+#   There was some training information (about moving the litter box closer to the toilet), but it wasn’t comprehensive.
+# Lack of Explicit Training Steps
+#   The retrieved text mentioned that cats can be trained to use the toilet, but not explicitly how to train them to use a litter box from scratch.
+#   The response inferred missing details, which did not directly match the retrieved context.
+# Too Much External Knowledge Added
+#   The answer contained general litter box training steps that may not have been fully grounded in the retrieved text.
+#   ragas penalizes answers that use too much external knowledge if the provided context doesn’t fully support it.
+
 
 
 #Feedback:
@@ -54,6 +111,7 @@ async def test_context_precision():
 
     # Score 
     score = await context_precision.single_turn_ascore(sample)
-    await print(parsed_response["answer"], [doc["page_content"] for doc in parsed_response["retrieved_docs"]] ,score)
+    log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nScore: {score}"
+    print(log)
   
 
