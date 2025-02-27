@@ -1,0 +1,20 @@
+1- Understand the RAG app code step by step
+2- Structure the test files using Pytest and Fixtures
+3- Add a simple example of a conversation and test it - Optional
+
+
+Presentation topics:
+
+What is RAG?
+Why not use LLM to answer questions?
+Real use cases
+Explore the architecture of the RAG app
+Show my small architecture and all the components used for this demo.
+How to test the RAG app? 
+Manual approach using human reasoning
+Automatic approach using RAGAS metrics
+What is RAGAS?
+What metrics can be used to test the RAG app?
+Show a demo of the RAGAS metrics and how to use it with Pytest.
+
+Create an abstract and send the proposal to PyCon Colombia
