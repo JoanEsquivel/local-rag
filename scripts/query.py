@@ -79,13 +79,21 @@ def query_rag(query_text: str):
     model = ChatOpenAI(
         # - Temperature is the randomness of the model. 0 is deterministic, 1 is random.
         temperature=0,
+        # - Model name. 
         model_name="gpt-4o-mini",
         # If not set in your environment, you can hardcode your API key here:
         openai_api_key=os.environ.get("OPENAI_API_KEY")
     )
     
     # Use invoke() instead of directly calling the model.
+    # - invoke() ensures that the model correctly processes messages in the right format.
+    # - In LangChain, invoke() is the recommended way to interact with AI models.
+    # - It abstracts away complexities like token handling and formatting.  
+    #  Better for Streaming & Batch Processing
+
     response = model.invoke(messages)
+    # - Get the content of the response.
+    # - Strip() removes any leading and trailing whitespace characters (spaces, tabs, etc.) from the string.
     response_text = response.content.strip()
 
     # Build a list of retrieved documents in the desired JSON structure
