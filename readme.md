@@ -63,6 +63,14 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
     pytest tests/test_response_relevancy.py -s
     ```
 
+## Environment Variables
+
+You need to set the following environment variables under the .env file:
+
+```
+OPENAI_API_KEY="{your_openai_api_key}"
+```
+
 
 ## RAG System Usage
 
