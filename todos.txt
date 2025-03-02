@@ -19,3 +19,14 @@ Show a demo of the RAGAS metrics and how to use it with Pytest.
 
 Create an abstract and send the proposal to PyCon Colombia
 Should I upload a video about this to my youtube channel? How to do it to not overlap with the conference?
+
+
+Commands to document: 
+
+pytest test_response_relevancy.py -s  
+
+
+I needed to run this export command to be able to run the tests since the tests are in a different folder than the package:
+
+export PYTHONPATH="${PYTHONPATH}://Users/joanesquivel/Desktop/personalRag"
+This is the explanation of the command: https://towardsdatascience.com/how-to-fix-modulenotfounderror-and-importerror-248ce5b69b1c/

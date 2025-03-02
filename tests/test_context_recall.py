@@ -1,4 +1,4 @@
-from query import query_rag
+from scripts.query import query_rag
 from ragas.metrics import LLMContextRecall
 from ragas import SingleTurnSample
 from ragas.llms import LangchainLLMWrapper

@@ -53,6 +53,17 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
     pip install -r requirements.txt
     ```
 
+4. To execute the tests you need to set the PYTHONPATH environment variable, for instance:
+    ```bash
+    export PYTHONPATH="${PYTHONPATH}:/Users/joanesquivel/Desktop/personalRag"
+    ```
+
+5. Run the tests(-s is to print the print statements in the code - Optional):
+    ```bash
+    pytest tests/test_response_relevancy.py -s
+    ```
+
+
 ## Usage
 
 1- Run the database_setup.py file to feed the database with the documents under the data folder:

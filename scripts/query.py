@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI  # Updated import for ChatOpenAI from la
 from dotenv import load_dotenv
 import os
 
-from get_embedding_function import get_embedding_function
+from scripts.get_embedding_function import get_embedding_function
 
 load_dotenv()
 
@@ -74,7 +74,7 @@ def query_rag(query_text: str):
 
     # Convert to a JSON string for printing
     json_output = json.dumps(output, indent=2, ensure_ascii=False)
-    print(json_output)
+    #print(json_output)
 
     return json_output
 
