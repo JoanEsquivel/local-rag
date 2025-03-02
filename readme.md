@@ -1,4 +1,4 @@
-# Project Title
+# Evaluate of RAG responses using RAGAS metrics & Pytest
 
 Local RAG Setup for Testing Purposes
 
