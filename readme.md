@@ -65,3 +65,23 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
 ## Environment Variables
 
 You need to set the following environment variables under the .env file:
+
+```
+OPENAI_API_KEY="{your_openai_api_key}"
+```
+
+
+## Contributing
+
+If you want to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push to the branch.
+5. Create a pull request.
+
+
+## License
+
+This project is licensed under the MIT License, which means you can use, copy, modify, and distribute the software, but you must include the original license and copyright notice in any copies or substantial portions of the software. See the LICENSE file for more details.
