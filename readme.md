@@ -8,13 +8,12 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
 
 ## Table of Contents
 
-- [OS requirements](#requirements)
+- [OS requirements](#os-requirements)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [RAG System Usage](#rag-system-usage)
 - [Contributing](#contributing)
 - [License](#license)
-
 
 ## OS requirements
 
@@ -66,45 +65,3 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
 ## Environment Variables
 
 You need to set the following environment variables under the .env file:
-
-```
-OPENAI_API_KEY="{your_openai_api_key}"
-```
-
-
-## RAG System Usage
-
-I attached under the data folder a PDF document with some information about cats. My intention is to show how to use the RAG system to answer questions about the document and using a simple data set for testing purposes.
-
-1- Run the database_setup.py file to feed the database with the documents under the data folder:
-    ```bash
-    python scripts/database_setup.py
-    ```
-You can have as many PDF documents as you want in the data folder. However, consider that you will need to conect to an LLM to generate the embeddings for the documents, and it may raise the cost of the API.
-
-2- Run the query.py file to test the RAG system:
-    ```bash
-    python scripts/query.py "your query here"
-    ```
-
-3- Examples of queries:
-
-```bash
-python scripts/query.py "What is the most popular cat breed?"
-```
-
-
-## Contributing
-
-If you want to contribute to this project, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes and commit them.
-4. Push to the branch.
-5. Create a pull request.
-
-
-## License
-
-This project is licensed under the MIT License, which means you can use, copy, modify, and distribute the software, but you must include the original license and copyright notice in any copies or substantial portions of the software. See the LICENSE file for more details.
