@@ -64,26 +64,25 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
     ```
 
 
-## Usage
+## RAG System Usage
 
 1- Run the database_setup.py file to feed the database with the documents under the data folder:
     ```bash
-    python database_setup.py
+    python scripts/database_setup.py
     ```
+You can have as many PDF documents as you want in the data folder. However, consider that you will need to conect to an LLM to generate the embeddings for the documents, and it may raise the cost of the API.
 
 2- Run the query.py file to test the RAG system:
     ```bash
-    python query.py "your query here"
+    python scripts/query.py "your query here"
     ```
 
 3- Examples of queries:
 
 ```bash
-python query.py "what is the typical debugging process?"
+python scripts/query.py "what is the typical debugging process?"
 ```
 
-```bash
-python query.py "Based on the ISO/IEC 25010 standard, what is the classification of the non-functional quality characteristics?"
-```
+
 
 
