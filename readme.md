@@ -66,6 +66,8 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
 
 ## RAG System Usage
 
+I attached under the data folder a PDF document with some information about cats. My intention is to show how to use the RAG system to answer questions about the document and using a simple data set for testing purposes.
+
 1- Run the database_setup.py file to feed the database with the documents under the data folder:
     ```bash
     python scripts/database_setup.py
@@ -80,7 +82,7 @@ You can have as many PDF documents as you want in the data folder. However, cons
 3- Examples of queries:
 
 ```bash
-python scripts/query.py "what is the typical debugging process?"
+python scripts/query.py "What is the most popular cat breed?"
 ```
 
 
