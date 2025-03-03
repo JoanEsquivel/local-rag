@@ -50,7 +50,7 @@ def print_log():
             for context in retrieved_contexts
         ])
         log = "\n".join([
-            "--------------------------------",
+            "--------------------------------\n",
             "===== LOG START =====",
             f"Question: {question}",
             "---------------------",
@@ -62,7 +62,7 @@ def print_log():
             f"Reference: {reference}" if reference else "Reference: None",
             "---------------------",
             f"Score: {score}" if score is not None else "Score: None",
-            "====== LOG END ======"
+            "====== LOG END ====== \n",
             "--------------------------------"
         ])
         print(log)
