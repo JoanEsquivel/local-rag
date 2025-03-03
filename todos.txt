@@ -1,6 +1,7 @@
-1- Understand the RAG app code step by step
-2- Structure the test files using Pytest and Fixtures
-3- Add a simple example of a conversation and test it - Optional
+1- Understand the RAG app code step by step DONE
+2- Structure the test files using Pytest and Fixtures WIP
+3- Add Linter if possible
+4- Add a simple example of a conversation and test it - Optional
 
 
 Presentation topics:
