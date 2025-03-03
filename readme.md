@@ -23,8 +23,13 @@ This project explores how to set up a local Retrieval-Augmented Generation (RAG)
 - git
 
 - If you want to, create a local environment for this project:
+    If you are using Mac:
     ```bash
     python -m venv local-ragas-env
+    ```
+    If you are using Windows:
+    ```
+    .\local-ragas-env\Scripts\activate.bat
     ```
 
 - Activate the virtual environment:
