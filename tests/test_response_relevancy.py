@@ -1,10 +1,6 @@
 from scripts.query import query_rag
 from ragas.metrics import ResponseRelevancy
 from ragas import SingleTurnSample
-from ragas.llms import LangchainLLMWrapper
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-import os
-from dotenv import load_dotenv
 import pytest
 import json
 
@@ -23,19 +19,19 @@ import json
 
 
 
-question = "How do cats communicate with humans and other cats?"
-  
 
-response = query_rag(question)
-parsed_response = json.loads(response)
-
-print(response)
 
 @pytest.mark.asyncio
-async def test_response_relevancy(langchain_llm__ragas_wrapper, get_embeddings):
+async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, get_question):
+
+    question = get_question("response_relevancy", "simple")
+  
+
+    response = query_rag(question)
+    parsed_response = json.loads(response)
 
     # Initialize the langchain wrapper and embeddings to be used for the response relevancy metric
-    response_relevancy = ResponseRelevancy(llm=langchain_llm__ragas_wrapper, embeddings=get_embeddings)
+    response_relevancy = ResponseRelevancy(llm=langchain_llm_ragas_wrapper, embeddings=get_embeddings)
 
 
     # Feed Data

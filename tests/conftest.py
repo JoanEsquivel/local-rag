@@ -4,16 +4,22 @@ from ragas.llms import LangchainLLMWrapper
 import json
 
 
+# Langchain LLM RAGAS Wrapper
+# This is a wrapper that allows us to use the Langchain LLM with the RAGAS library.
 @pytest.fixture
 def langchain_llm_ragas_wrapper():
     llm = ChatOpenAI(model="gpt-4", temperature=0)
     langchain_llm = LangchainLLMWrapper(llm)
     return langchain_llm
 
+# Get Embeddings
+# This is neccesary for the response relevancy metric. It needs to be part of the metric analysis since it uses the embeddings to compare the response with the retrieved context.
 @pytest.fixture
 def get_embeddings():
     return OpenAIEmbeddings()
 
+# Get Question
+# This is a fixture that returns the question from the JSON file.
 @pytest.fixture
 def get_question():
 
@@ -24,6 +30,8 @@ def get_question():
 
     return _get_question
 
+# Get Reference
+# This is a fixture that returns the reference from the JSON file.
 @pytest.fixture
 def get_reference():
     def _get_reference(file_name, key_name):
