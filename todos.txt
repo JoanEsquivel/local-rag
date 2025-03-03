@@ -1,5 +1,7 @@
 1- Understand the RAG app code step by step DONE
-2- Structure the test files using Pytest and Fixtures WIP
+2- Structure the test files using Pytest and Fixtures DONE
+3- Analyze every test file and explain what the metric means.
+4- Given the analysis, think about the solutions to improve the metrics. If it is because of the question, the chunk amount, etc.
 3- Add Linter if possible
 4- Add a simple example of a conversation and test it - Optional
 

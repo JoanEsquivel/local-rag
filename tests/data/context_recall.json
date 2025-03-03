@@ -1,6 +1,6 @@
 {
     "questions": {
-        "simple": "What are the different types of cat coats and fur patterns",
-        "simple_reference": "Cats have various coat types and fur patterns. The main types include: Tabby (Mackerel, Classic/Blotched, Ticked, Spotted), Tortoiseshell and Calico (Tortie, Calico, Torbies), Bicolor (Tuxedo, Cow/Moo, Black Mask, Turkish Van), Solid Colors (Black, White, Blue, Chocolate, Cinnamon, Lilac), Smoke and Shaded (Smoke Cats, Shaded Cats), and Colorpoint (Siamese-Type Patterns with dark points on the ears, face, paws, and tail)."
+        "simple": "What are the different types of cat coats, fur textures, and patterns, and how do they affect a cat's appearance?",
+        "simple_reference": "Cats have various coat types, fur textures, and patterns that influence their appearance. Coat types include short-haired, long-haired, semi-longhaired, curly (like Rex breeds), and hairless (like the Sphynx). Fur textures vary from soft and silky (Persian) to coarse (Abyssinian) or wavy (Devon Rex). Common fur patterns include solid (one color), tabby (striped or swirled), bicolor (two colors), tortoiseshell (blended black and orange), calico (tortoiseshell with white), pointed (darker face, ears, paws, and tail, like Siamese), and spotted (like Bengals). These traits impact a cat’s appearance by influencing color distribution, texture feel, and overall distinctiveness, with genetics playing a key role in determining variations."
     }
 }
