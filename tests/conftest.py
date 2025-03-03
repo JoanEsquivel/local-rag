@@ -1,12 +1,11 @@
 import pytest
-import os
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from ragas.llms import LangchainLLMWrapper
 import json
 
 
 @pytest.fixture
-def langchain_llm__ragas_wrapper():
+def langchain_llm_ragas_wrapper():
     llm = ChatOpenAI(model="gpt-4", temperature=0)
     langchain_llm = LangchainLLMWrapper(llm)
     return langchain_llm

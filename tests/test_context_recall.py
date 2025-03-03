@@ -22,7 +22,7 @@ import json
 
 
 @pytest.mark.asyncio
-async def test_context_recall(langchain_llm__ragas_wrapper, get_question, get_reference):
+async def test_context_recall(langchain_llm_ragas_wrapper, get_question, get_reference):
 
     question = get_question("context_recall", "simple")
     reference = get_reference("context_recall", "simple_reference")
@@ -33,7 +33,7 @@ async def test_context_recall(langchain_llm__ragas_wrapper, get_question, get_re
     #print(response)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
-    context_recall = LLMContextRecall(llm=langchain_llm__ragas_wrapper)
+    context_recall = LLMContextRecall(llm=langchain_llm_ragas_wrapper)
 
 
     # Feed Data

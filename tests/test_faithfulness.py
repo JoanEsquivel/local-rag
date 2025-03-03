@@ -21,20 +21,17 @@ import json
 # Retrieved Context -> Top K retrieved documents
 
 
+@pytest.mark.asyncio
+async def test_faithfulness(langchain_llm_ragas_wrapper, get_question):
 
-question = "What are some unique physical traits and abilities of cats"
+    question = get_question("faithfulness", "simple")
   
 
-response = query_rag(question)
-parsed_response = json.loads(response)
-
-print(response)
-
-@pytest.mark.asyncio
-async def test_faithfulness(langchain_llm__ragas_wrapper):
+    response = query_rag(question)
+    parsed_response = json.loads(response)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
-    faithfulness = Faithfulness(llm=langchain_llm__ragas_wrapper)
+    faithfulness = Faithfulness(llm=langchain_llm_ragas_wrapper)
 
 
     # Feed Data

@@ -84,7 +84,7 @@ import json
 
 
 @pytest.mark.asyncio
-async def test_context_precision(langchain_llm__ragas_wrapper, get_question):
+async def test_context_precision(langchain_llm_ragas_wrapper, get_question):
 
     question = get_question("context_precision", "simple")
 
@@ -94,7 +94,7 @@ async def test_context_precision(langchain_llm__ragas_wrapper, get_question):
     #print(response)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
-    context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm__ragas_wrapper)
+    context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm_ragas_wrapper)
 
 
     # Feed Data
