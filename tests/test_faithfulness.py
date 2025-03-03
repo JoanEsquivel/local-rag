@@ -13,14 +13,6 @@ import json
 # High Faithfulness = The response is accurate and directly supported by the retrieved context.
 
 
-
-
-#User Input -> Query
-# Response -> Response
-# Reference -> Ground Truth
-# Retrieved Context -> Top K retrieved documents
-
-
 @pytest.mark.asyncio
 async def test_faithfulness(langchain_llm_ragas_wrapper, get_question):
 
@@ -43,7 +35,7 @@ async def test_faithfulness(langchain_llm_ragas_wrapper, get_question):
 
     # Score 
     score = await faithfulness.single_turn_ascore(sample)
-    log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nScore: {score}"
+    log = f"Question: {question}\n -- \nResponse: {parsed_response['answer']}\n -- \nRetrieved Contexts: {parsed_response['retrieved_docs']}\n -- \nScore: {score}"
     print(log)
     assert score >= 0.5
   

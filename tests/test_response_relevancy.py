@@ -10,17 +10,6 @@ import json
 # It uses the retrieved context correctly without adding unnecessary or unrelated details.
 
 
-
-
-#User Input -> Query
-# Response -> Response
-# Reference -> Ground Truth
-# Retrieved Context -> Top K retrieved documents
-
-
-
-
-
 @pytest.mark.asyncio
 async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, get_question):
 
@@ -43,7 +32,7 @@ async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, g
 
     # Score 
     score = await response_relevancy.single_turn_ascore(sample)
-    log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nScore: {score}"
+    log = f"Question: {question}\n -- \nResponse: {parsed_response['answer']}\n -- \nRetrieved Contexts: {parsed_response['retrieved_docs']}\n -- \nScore: {score}"
     print(log)
     assert score >= 0.5
   

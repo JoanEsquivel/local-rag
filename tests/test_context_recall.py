@@ -9,18 +9,6 @@ import json
 # Low Recall = The retrieval missed important relevant information.   
 
 
-
-
-#User Input -> Query
-# Response -> Response
-# Reference -> Ground Truth
-# Retrieved Context -> Top K retrieved documents
-
-
-
-
-
-
 @pytest.mark.asyncio
 async def test_context_recall(langchain_llm_ragas_wrapper, get_question, get_reference):
 
@@ -45,7 +33,7 @@ async def test_context_recall(langchain_llm_ragas_wrapper, get_question, get_ref
 
     # Score 
     score = await context_recall.single_turn_ascore(sample)
-    log = f"Question: {question}\nResponse: {response}\nRetrieved Contexts:{response}\nReference: {reference}\nScore: {score}"
+    log = f"Question: {question}\n -- \nResponse: {response}\n -- \nRetrieved Contexts: {response}\n -- \nReference: {reference}\n -- \nScore: {score}"
     print(log)
     assert score >= 0.5
   
