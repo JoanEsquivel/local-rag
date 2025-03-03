@@ -1,10 +1,6 @@
 from scripts.query import query_rag
 from ragas.metrics import LLMContextPrecisionWithoutReference
 from ragas import SingleTurnSample
-from ragas.llms import LangchainLLMWrapper
-from langchain_openai import ChatOpenAI
-import os
-from dotenv import load_dotenv
 import pytest
 import json
 
@@ -44,7 +40,7 @@ import json
 #question = "What are the common health issues in cats?"
 
 # Temporal Context Questions
-question = "How long do domestic cats typically live?"
+#question = "How long do domestic cats typically live?"
 
 # Confusable Entities
 #question = "What is the function of a cat’s whiskers?"
@@ -85,17 +81,17 @@ question = "How long do domestic cats typically live?"
 # Score and retrived context analysis is not the best when there are repeated words in the document
 # The score is not the best when the question is not well defined
 
-response = query_rag(question)
-parsed_response = json.loads(response)
 
-print(response)
 
 @pytest.mark.asyncio
-async def test_context_precision(langchain_llm__ragas_wrapper):
-    # Precision = Number of relevant documents retrieved / Total number of documents retrieved
-    # For instance: "Causes of deforestation in the Amazon rainforest"
-    # Retrieved docuemtns: 5 total of which 3 are relevant and 2 are irrelevant
-    # Precision = 3 / 5 = 0.6 (60%)
+async def test_context_precision(langchain_llm__ragas_wrapper, get_question):
+
+    question = get_question("context_precision", "simple")
+
+    response = query_rag(question)
+    parsed_response = json.loads(response)
+
+    #print(response)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
     context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm__ragas_wrapper)
@@ -110,7 +106,7 @@ async def test_context_precision(langchain_llm__ragas_wrapper):
 
     # Score 
     score = await context_precision.single_turn_ascore(sample)
-    log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nScore: {score}"
+    log = f"Question: {question}\nResponse: {parsed_response['answer']}\nRetrieved Contexts: {response}\nScore: {score}"
     print(log)
     assert score >= 0.5
   

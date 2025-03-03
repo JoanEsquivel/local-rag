@@ -1,10 +1,6 @@
 from scripts.query import query_rag
 from ragas.metrics import LLMContextRecall
 from ragas import SingleTurnSample
-from ragas.llms import LangchainLLMWrapper
-from langchain_openai import ChatOpenAI
-import os
-from dotenv import load_dotenv
 import pytest
 import json
 
@@ -22,22 +18,19 @@ import json
 
 
 
-question = "What are the different types of cat coats and fur patterns"
-reference = """Cats have various coat types and fur patterns. The main types include: 
-        Tabby (Mackerel, Classic/Blotched, Ticked, Spotted), 
-        Tortoiseshell and Calico (Tortie, Calico, Torbies), 
-        Bicolor (Tuxedo, Cow/Moo, Black Mask, Turkish Van), 
-        Solid Colors (Black, White, Blue, Chocolate, Cinnamon, Lilac), 
-        Smoke and Shaded (Smoke Cats, Shaded Cats), 
-        and Colorpoint (Siamese-Type Patterns with dark points on the ears, face, paws, and tail)."""   
 
-response = query_rag(question)
-parsed_response = json.loads(response)
 
-print(response)
 
 @pytest.mark.asyncio
-async def test_context_recall(langchain_llm__ragas_wrapper):
+async def test_context_recall(langchain_llm__ragas_wrapper, get_question, get_reference):
+
+    question = get_question("context_recall", "simple")
+    reference = get_reference("context_recall", "simple_reference")
+
+    response = query_rag(question)
+    parsed_response = json.loads(response)
+
+    #print(response)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
     context_recall = LLMContextRecall(llm=langchain_llm__ragas_wrapper)
@@ -52,7 +45,7 @@ async def test_context_recall(langchain_llm__ragas_wrapper):
 
     # Score 
     score = await context_recall.single_turn_ascore(sample)
-    log = f"Question: {question}\nRetrieved Contexts: {parsed_response['retrieved_docs']}\nReference: {reference}\nScore: {score}"
+    log = f"Question: {question}\nResponse: {response}\nRetrieved Contexts:{response}\nReference: {reference}\nScore: {score}"
     print(log)
     assert score >= 0.5
   
