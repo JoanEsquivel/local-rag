@@ -4,9 +4,9 @@ from ragas import SingleTurnSample
 import pytest
 import json
 
-#  Response Relevancy measures how well the generated response answers the user’s question based on the retrieved context.
-# ✅ High Response Relevancy
-# The response fully answers the user’s question with clear, direct, and specific information.
+# Response Relevancy
+# Definition: Measures how well the generated response answers the user’s question based on the retrieved context.
+# High Response Relevancy = The response fully answers the user’s question with clear, direct, and specific information.
 # It uses the retrieved context correctly without adding unnecessary or unrelated details.
 
 

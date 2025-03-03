@@ -4,6 +4,7 @@ from ragas import SingleTurnSample
 import pytest
 import json
 
+# Context Precision
 # Definition: Measures how much of the retrieved context is actually relevant to answering the question.
 # High Precision = Most of the retrieved contexts are useful for answering the query.
 # Low Precision = Many of the retrieved contexts are irrelevant or only partially relevant.

@@ -4,6 +4,7 @@ from ragas import SingleTurnSample
 import pytest
 import json
 
+# Context Recall
 # Definition: Measures how much of the total relevant information was retrieved.
 # High Recall = Most of the relevant information available in the document was retrieved.
 # Low Recall = The retrieval missed important relevant information.   

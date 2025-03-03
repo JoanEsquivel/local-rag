@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import pytest
 import json
 
+# Faithfulness
 # Definition: The response does not introduce external or incorrect information. - It only rephrases and summarizes what is found in the retrieved context.
 # Low Faithfulness = The response adds information that is not supported by the retrieved context. It may alter key facts, leading to a misleading or incorrect answer.
 # High Faithfulness = The response is accurate and directly supported by the retrieved context.
