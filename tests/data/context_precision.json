@@ -1,6 +1,6 @@
 {
     "questions": {
-        "simple": "What are the key physical characteristics of domestic cats",
+        "simple": "What physical traits of domestic cats are unique compared to wild felines",
         "misleading": "Do all white cats have blue eyes? Retrieve facts specifically about eye color variation in white cats?",
         "instructions": "How can I train my cat to use a litter box?",
         "out_of_scope": "Differences between a cat and a dog?"
