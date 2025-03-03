@@ -13,18 +13,17 @@ import json
 
 
 @pytest.mark.asyncio
-async def test_context_precision(langchain_llm_ragas_wrapper, get_question):
+async def test_context_precision(langchain_llm_ragas_wrapper, get_question, print_log):
 
+    # Get Question 
     question = get_question("context_precision", "simple")
 
+    # Get Response
     response = query_rag(question)
     parsed_response = json.loads(response)
 
-    #print(response)
-
     # Initialize the LLM and Ragas Setup for Context Precision 
     context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm_ragas_wrapper)
-
 
     # Feed Data
     sample = SingleTurnSample(
@@ -35,8 +34,7 @@ async def test_context_precision(langchain_llm_ragas_wrapper, get_question):
 
     # Score 
     score = await context_precision.single_turn_ascore(sample)
-    log = f"Question: {question}\n -- \nResponse: {parsed_response['answer']}\n -- \nRetrieved Contexts: {response}\n -- \nScore: {score}"
-    print(log)
+    print_log(question, parsed_response["answer"], parsed_response["retrieved_docs"], score=score)
     assert score >= 0.5
   
 

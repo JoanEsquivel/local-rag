@@ -11,11 +11,12 @@ import json
 
 
 @pytest.mark.asyncio
-async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, get_question):
+async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, get_question, print_log):
 
+    # Get Question  
     question = get_question("response_relevancy", "simple")
-  
 
+    # Get Response
     response = query_rag(question)
     parsed_response = json.loads(response)
 
@@ -32,8 +33,7 @@ async def test_response_relevancy(langchain_llm_ragas_wrapper, get_embeddings, g
 
     # Score 
     score = await response_relevancy.single_turn_ascore(sample)
-    log = f"Question: {question}\n -- \nResponse: {parsed_response['answer']}\n -- \nRetrieved Contexts: {parsed_response['retrieved_docs']}\n -- \nScore: {score}"
-    print(log)
+    print_log(question, parsed_response["answer"], parsed_response["retrieved_docs"], score=score)
     assert score >= 0.5
   
 

@@ -40,3 +40,32 @@ def get_reference():
             return str(data["questions"].get(key_name, ""))
     return _get_reference
 
+import pytest
+
+@pytest.fixture
+def print_log():
+    def _log(question, response, retrieved_contexts, reference=None, score=None):
+        formatted_contexts = "\n".join([
+            f"File: {context['file_name']}\nContent: {context['page_content']}\n"
+            for context in retrieved_contexts
+        ])
+        log = "\n".join([
+            "--------------------------------",
+            "===== LOG START =====",
+            f"Question: {question}",
+            "---------------------",
+            f"Response: {response}",
+            "---------------------",
+            "Retrieved Contexts:",
+            formatted_contexts,
+            "---------------------",
+            f"Reference: {reference}" if reference else "Reference: None",
+            "---------------------",
+            f"Score: {score}" if score is not None else "Score: None",
+            "====== LOG END ======"
+            "--------------------------------"
+        ])
+        print(log)
+    
+    return _log
+

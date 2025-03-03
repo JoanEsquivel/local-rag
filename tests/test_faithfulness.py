@@ -15,11 +15,12 @@ import json
 
 
 @pytest.mark.asyncio
-async def test_faithfulness(langchain_llm_ragas_wrapper, get_question):
+async def test_faithfulness(langchain_llm_ragas_wrapper, get_question, print_log):
 
+    # Get Question 
     question = get_question("faithfulness", "simple")
   
-
+    # Get Response
     response = query_rag(question)
     parsed_response = json.loads(response)
 
@@ -36,8 +37,7 @@ async def test_faithfulness(langchain_llm_ragas_wrapper, get_question):
 
     # Score 
     score = await faithfulness.single_turn_ascore(sample)
-    log = f"Question: {question}\n -- \nResponse: {parsed_response['answer']}\n -- \nRetrieved Contexts: {parsed_response['retrieved_docs']}\n -- \nScore: {score}"
-    print(log)
+    print_log(question, parsed_response["answer"], parsed_response["retrieved_docs"], score=score)
     assert score >= 0.5
   
 
