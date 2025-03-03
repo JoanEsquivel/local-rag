@@ -65,7 +65,7 @@ def query_rag(query_text: str):
     # - Can overload the LLM with unnecessary information.
 
 
-    results = db.similarity_search_with_score(query_text, k=8)
+    results = db.similarity_search_with_score(query_text, k=5)
 
     # - Join the page content of the results into a single string.
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
