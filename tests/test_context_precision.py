@@ -44,7 +44,7 @@ import json
 #question = "What are the common health issues in cats?"
 
 # Temporal Context Questions
-#question = "How long do domestic cats typically live?"
+question = "How long do domestic cats typically live?"
 
 # Confusable Entities
 #question = "What is the function of a cat’s whiskers?"
@@ -91,16 +91,14 @@ parsed_response = json.loads(response)
 print(response)
 
 @pytest.mark.asyncio
-async def test_context_precision():
+async def test_context_precision(langchain_llm__ragas_wrapper):
     # Precision = Number of relevant documents retrieved / Total number of documents retrieved
     # For instance: "Causes of deforestation in the Amazon rainforest"
     # Retrieved docuemtns: 5 total of which 3 are relevant and 2 are irrelevant
     # Precision = 3 / 5 = 0.6 (60%)
 
     # Initialize the LLM and Ragas Setup for Context Precision 
-    llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ.get("OPENAI_API_KEY"))
-    langchain_llm = LangchainLLMWrapper(llm)
-    context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm)
+    context_precision = LLMContextPrecisionWithoutReference(llm=langchain_llm__ragas_wrapper)
 
 
     # Feed Data

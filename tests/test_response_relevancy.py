@@ -32,16 +32,10 @@ parsed_response = json.loads(response)
 print(response)
 
 @pytest.mark.asyncio
-async def test_response_relevancy():
+async def test_response_relevancy(langchain_llm__ragas_wrapper, get_embeddings):
 
-    # Initialize the LLM and Ragas Setup for Context Precision 
-    llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ.get("OPENAI_API_KEY"))
-    embeddings = OpenAIEmbeddings(openai_api_key=os.environ.get("OPENAI_API_KEY"))  # Add Embeddings
-    langchain_llm = LangchainLLMWrapper(llm)
-    response_relevancy = ResponseRelevancy(llm=langchain_llm, embeddings=embeddings)
-
-
-
+    # Initialize the langchain wrapper and embeddings to be used for the response relevancy metric
+    response_relevancy = ResponseRelevancy(llm=langchain_llm__ragas_wrapper, embeddings=get_embeddings)
 
 
     # Feed Data

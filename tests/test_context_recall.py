@@ -37,12 +37,10 @@ parsed_response = json.loads(response)
 print(response)
 
 @pytest.mark.asyncio
-async def test_context_precision():
+async def test_context_recall(langchain_llm__ragas_wrapper):
 
     # Initialize the LLM and Ragas Setup for Context Precision 
-    llm = ChatOpenAI(model="gpt-4", temperature=0, openai_api_key=os.environ.get("OPENAI_API_KEY"))
-    langchain_llm = LangchainLLMWrapper(llm)
-    context_recall = LLMContextRecall(llm=langchain_llm)
+    context_recall = LLMContextRecall(llm=langchain_llm__ragas_wrapper)
 
 
     # Feed Data
