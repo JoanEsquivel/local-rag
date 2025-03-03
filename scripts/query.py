@@ -101,6 +101,13 @@ def query_rag(query_text: str):
     for doc, _ in results:
     # Here we assume the doc.metadata contains a key named "id" 
     # that uniquely identifies the file.
+    
+    # - Get the file name from the metadata.
+    # - If the file name is not found, use "Unknown File Name".
+    # - Append the file name and page content to the list.
+    # - The list is a list of dictionaries.
+    # - Each dictionary contains a file name and page content.
+    # - The list is used to build the final JSON response.
         file_name = doc.metadata.get("id", "Unknown File Name")
         retrieved_docs.append({
             "file_name": file_name,
@@ -115,6 +122,8 @@ def query_rag(query_text: str):
     }
 
     # Convert to a JSON string for printing
+    # - indent=2 is used to format the JSON string with 2 spaces for each level of indentation.
+    # - ensure_ascii=False is used to ensure that the JSON string is not encoded in ASCII.
     json_output = json.dumps(output, indent=2, ensure_ascii=False)
     #print(json_output)
 
