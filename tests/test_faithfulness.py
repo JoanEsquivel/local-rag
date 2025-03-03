@@ -27,7 +27,6 @@ async def test_faithfulness(langchain_llm_ragas_wrapper, get_question, print_log
     # Initialize the LLM and Ragas Setup for Context Precision 
     faithfulness = Faithfulness(llm=langchain_llm_ragas_wrapper)
 
-
     # Feed Data
     sample = SingleTurnSample(
         user_input=question,

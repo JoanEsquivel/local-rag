@@ -26,7 +26,6 @@ async def test_context_recall(langchain_llm_ragas_wrapper, get_question, get_ref
     # Initialize the LLM and Ragas Setup for Context Precision 
     context_recall = LLMContextRecall(llm=langchain_llm_ragas_wrapper)
 
-
     # Feed Data
     sample = SingleTurnSample(
         user_input=question,
