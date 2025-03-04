@@ -20,7 +20,7 @@ What is RAGAS?
 What metrics can be used to test the RAG app?
 Show a demo of the RAGAS metrics and how to use it with Pytest.
 
-Create an abstract and send the proposal to PyCon Colombia
+Create an abstract and send the proposal to PyCon Colombia - DONE
 Should I upload a video about this to my youtube channel? How to do it to not overlap with the conference?
 
 
