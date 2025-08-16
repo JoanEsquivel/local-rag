@@ -9,3 +9,4 @@ langchain-chroma
 python-dotenv
 ragas
 langchain-ollama
+requests # HTTP client for health checks
