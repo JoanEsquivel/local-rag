@@ -13,6 +13,23 @@ Create a `.env` file in the project root with the following variables:
 EMBEDDING_PROVIDER=ollama
 ```
 
+### Database Configuration
+
+```env
+# ChromaDB collection name (default: qwen2.5-7b-instruct)
+CHROMA_COLLECTION_NAME=qwen2.5-7b-instruct
+
+# Document chunking settings
+CHUNK_SIZE=800                    # Size of each text chunk
+CHUNK_OVERLAP=80                  # Overlap between chunks
+MAX_DOCUMENTS=                    # Limit number of documents (optional)
+
+# Processing options
+ENABLE_INCREMENTAL_UPDATES=true   # Skip existing documents
+ENABLE_METADATA_ENRICHMENT=true   # Add extra metadata
+BATCH_SIZE=100                    # Batch size for database operations
+```
+
 ### Ollama Configuration (Local)
 
 ```env
@@ -56,10 +73,39 @@ OLLAMA_EMBEDDING_MODEL=nomic-embed-text
 OLLAMA_BASE_URL=http://custom-ollama-server:11434
 ```
 
+### Example 4: Performance Optimized Setup
+```env
+EMBEDDING_PROVIDER=ollama
+OLLAMA_EMBEDDING_MODEL=bge-m3:567m
+CHUNK_SIZE=1200
+CHUNK_OVERLAP=120
+BATCH_SIZE=200
+ENABLE_INCREMENTAL_UPDATES=true
+```
+
+### Example 5: Development/Testing Setup
+```env
+EMBEDDING_PROVIDER=ollama
+CHUNK_SIZE=400
+CHUNK_OVERLAP=40
+MAX_DOCUMENTS=50
+ENABLE_METADATA_ENRICHMENT=true
+```
+
 ## 🎯 Benefits of New Architecture
 
+### For Embeddings
 - **Flexibility**: Switch between local and cloud embeddings easily
 - **Error Handling**: Automatic health checks and clear error messages
 - **Configuration**: Environment-based configuration for different environments
 - **Logging**: Better visibility into what's happening
 - **Validation**: Automatic model availability checks
+
+### For Database Setup
+- **Dynamic Path Resolution**: Works from any directory (scripts/ or project root)
+- **Intelligent Processing**: Automatic duplicate detection and incremental updates
+- **Configurable Chunking**: Adjust chunk size and overlap via environment variables
+- **Batch Processing**: Handle large document sets efficiently
+- **Rich Metadata**: Automatic metadata enrichment with processing statistics
+- **Comprehensive Logging**: Detailed progress tracking and error reporting
+- **CLI Enhancement**: Rich command-line interface with multiple options

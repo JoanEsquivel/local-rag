@@ -254,7 +254,7 @@ graph TD
 
 ## 🏗️ Architecture Improvements
 
-The embedding system has been enhanced with enterprise-grade features while maintaining 100% backward compatibility:
+Both the **embedding system** and **database setup** have been enhanced with enterprise-grade features while maintaining 100% backward compatibility:
 
 ### ✅ **Enhanced Features**
 
@@ -282,25 +282,70 @@ The embedding system has been enhanced with enterprise-grade features while main
 - **Clean separation** of concerns
 - **Easy testing** and mocking capabilities
 
+#### **📚 Database Processing (NEW)**
+- **Dynamic path resolution** - works from any directory
+- **Intelligent duplicate detection** and incremental updates
+- **Configurable chunking strategies** via environment variables
+- **Batch processing** for large document sets
+- **Rich metadata enrichment** with processing statistics
+- **Enterprise CLI** with multiple configuration options
+
 ### 🎯 **Backward Compatibility Guaranteed**
 
 ```python
 # ✅ Original code continues to work unchanged
+
+# Legacy embedding function
 from scripts.get_embedding_function import get_embedding_function
 embeddings = get_embedding_function()  # Still works exactly the same
 
+# Legacy database functions
+from scripts.database_setup import load_documents, split_documents, add_to_chroma
+docs = load_documents()  # Still works exactly the same
+
 # 🚀 New capabilities available when needed
+
+# Advanced embedding configuration
 from scripts.get_embedding_function import get_embedding_function_new
 embeddings = get_embedding_function_new(provider="openai")  # Switch providers easily
+
+# Advanced database setup
+from scripts.database_setup import DatabaseSetup, DatabaseConfig
+config = DatabaseConfig(chunk_size=1200, enable_incremental_updates=True)
+setup = DatabaseSetup(config)
+stats = setup.setup_database()  # Rich statistics and error handling
 ```
 
 ### 🔬 **For QA Engineers**
 
-The improved architecture provides:
+The improved architecture provides comprehensive testing and debugging capabilities:
+
+#### **🔍 Enhanced Debugging**
 - **Better error diagnostics** when tests fail
+- **Structured logging** with detailed execution traces
+- **Rich configuration validation** with clear error messages
+- **Performance metrics** for identifying bottlenecks
+
+#### **🧪 Flexible Test Environments**
 - **Environment isolation** for different test scenarios  
 - **Configurable backends** for testing various models
-- **Health check endpoints** for monitoring test infrastructure
+- **Custom data paths** for test-specific documents
+- **Incremental testing** without rebuilding entire database
+
+#### **⚙️ Test Configuration Examples**
+```env
+# Testing environment
+CHUNK_SIZE=400                    # Smaller chunks for faster tests
+MAX_DOCUMENTS=10                  # Limit dataset size
+ENABLE_INCREMENTAL_UPDATES=false # Always rebuild for clean tests
+BATCH_SIZE=50                     # Smaller batches for testing
+```
+
+#### **📊 Monitoring & Validation**
+- **Database statistics** for validating test data
+- **Health check endpoints** for CI/CD pipeline integration
+- **Processing metrics** for performance regression testing
+- **Automatic validation** of document processing
 
 ## RAGAS Evaluation Metrics
 
@@ -377,28 +422,96 @@ graph TD
 
 ## Database Setup
 
-Before using the RAG system, you need to set up the vector database with your documents:
+The database setup system has been enhanced with enterprise-grade features while maintaining full backward compatibility.
+
+### 🚀 **Quick Setup**
 
 1. **Place your PDF documents** in the `data/` directory
 
-2. **Set up the database** (run from the project root):
+2. **Basic setup** (works from any directory):
    ```bash
    # Activate virtual environment
    source local-ragas-env/bin/activate
    
-   # Navigate to scripts directory
-   cd scripts
+   # Basic setup - works from project root OR scripts directory
+   python scripts/database_setup.py
    
-   # Create/populate the vector database
-   python database_setup.py
-   
-   # Optional: Reset the database if you want to start fresh
-   python database_setup.py --reset
+   # OR from scripts directory
+   cd scripts && python database_setup.py
    ```
 
-3. **Verify database creation**:
-   - Check that a `chroma/` directory was created in the project root
-   - The database will contain embeddings of your PDF documents
+### ⚙️ **Advanced Configuration**
+
+The new architecture supports rich configuration options:
+
+```bash
+# Reset and rebuild database
+python scripts/database_setup.py --reset
+
+# Custom chunk size for better performance
+python scripts/database_setup.py --chunk-size 1200 --chunk-overlap 120
+
+# Use custom data directory
+python scripts/database_setup.py --data-path ./my-documents
+
+# Custom collection name
+python scripts/database_setup.py --collection-name my-project-docs
+
+# Verbose logging for troubleshooting
+python scripts/database_setup.py --verbose
+
+# See all options
+python scripts/database_setup.py --help
+```
+
+### 🔧 **Environment-Based Configuration**
+
+Create a `.env` file for persistent configuration:
+
+```env
+# Document processing
+CHUNK_SIZE=800                    # Size of text chunks
+CHUNK_OVERLAP=80                  # Overlap between chunks
+MAX_DOCUMENTS=100                 # Limit documents (optional)
+
+# Database settings
+CHROMA_COLLECTION_NAME=my-docs    # Custom collection name
+ENABLE_INCREMENTAL_UPDATES=true   # Skip existing documents
+BATCH_SIZE=100                    # Processing batch size
+
+# Enable rich metadata
+ENABLE_METADATA_ENRICHMENT=true
+```
+
+### 📊 **Enhanced Features**
+
+- **🔄 Incremental Updates**: Automatically skips existing documents
+- **📈 Batch Processing**: Handles large document sets efficiently
+- **🛡️ Error Handling**: Clear error messages with solutions
+- **📊 Rich Logging**: Detailed progress and performance metrics
+- **🎯 Smart Path Resolution**: Works from any directory
+- **📋 Metadata Enrichment**: Automatic document statistics and timestamps
+
+### 🔍 **Verification**
+
+After setup, verify your database:
+
+```bash
+# Check database statistics (new feature)
+python -c "
+from scripts.database_setup import DatabaseSetup
+setup = DatabaseSetup()
+stats = setup.get_database_info()
+print(f'Documents: {stats.get(\"total_documents\", 0)}')
+print(f'Sources: {stats.get(\"unique_sources\", 0)}')
+"
+```
+
+**Expected results:**
+- ✅ `chroma/` directory created in project root
+- ✅ Database populated with document embeddings
+- ✅ Processing logs show successful completion
+- ✅ No error messages in output
 
 ## RAG System Usage
 
