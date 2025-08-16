@@ -8,17 +8,19 @@ from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 #Used to create a chat openAI model.
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 #Used to load environment variables from a .env file.
 from dotenv import load_dotenv
 import os
 #Used to get the embedding function.
-from scripts.get_embedding_function import get_embedding_function
+from get_embedding_function import get_embedding_function
 
 # Load the environment variables from the .env file.
 load_dotenv()
 
 # The path to the Chroma database.
-CHROMA_PATH = "chroma"
+CHROMA_PATH = "../chroma"
+COLLECTION_NAME = "local-bge-m3-567m"
 
 # The prompt template for the chat openAI model.
 PROMPT_TEMPLATE = """
@@ -30,6 +32,22 @@ Answer the question based only on the following context:
 
 Answer the question based on the above context: {question}
 """
+
+def clean_think_process(text: str) -> str:
+    """
+    Remove the <think>...</think> reasoning process from deepseek-r1 model output.
+    The model includes its reasoning in <think> tags which should be excluded from the final answer.
+    """
+    import re
+    
+    # Remove everything between <think> and </think> tags (including the tags themselves)
+    # The re.DOTALL flag makes . match newlines as well
+    cleaned_text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
+    
+    # Clean up any extra whitespace that might be left
+    cleaned_text = cleaned_text.strip()
+    
+    return cleaned_text
 
 #Used to get the query text from the command line.
 def main():
@@ -45,7 +63,7 @@ def query_rag(query_text: str):
     # - Get the embedding function.
     # - Get the Chroma database from the database setup script.
     embedding_function = get_embedding_function()
-    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function, collection_name=COLLECTION_NAME)
 
     # Search the DB.
     # - It returns a list of documents most similar to the query text and distance in float for each. Lower score represents more similarity.
@@ -76,13 +94,23 @@ def query_rag(query_text: str):
     messages = prompt_template.format_messages(context=context_text, question=query_text)
     
     # Instantiate the ChatOpenAI model. 
-    model = ChatOpenAI(
+    # model = ChatOpenAI(
+    #     # - Temperature is the randomness of the model. 0 is deterministic, 1 is random.
+    #     temperature=0,
+    #     # - Model name. 
+    #     model_name="gpt-4o-mini",
+    #     # If not set in your environment, you can hardcode your API key here:
+    #     openai_api_key=os.environ.get("OPENAI_API_KEY")
+    # )
+
+    model = ChatOllama(
         # - Temperature is the randomness of the model. 0 is deterministic, 1 is random.
         temperature=0,
         # - Model name. 
-        model_name="gpt-4o-mini",
+        model="deepseek-r1:8b",
         # If not set in your environment, you can hardcode your API key here:
-        openai_api_key=os.environ.get("OPENAI_API_KEY")
+        # openai_api_key=os.environ.get("OPENAI_API_KEY")
+        verbose=True
     )
     
     # Use invoke() instead of directly calling the model.
@@ -95,6 +123,9 @@ def query_rag(query_text: str):
     # - Get the content of the response.
     # - Strip() removes any leading and trailing whitespace characters (spaces, tabs, etc.) from the string.
     response_text = response.content.strip()
+    
+    # Remove the <think> reasoning process from deepseek-r1 model output
+    response_text = clean_think_process(response_text)
 
     # Build a list of retrieved documents in the desired JSON structure
     retrieved_docs = []
@@ -125,7 +156,7 @@ def query_rag(query_text: str):
     # - indent=2 is used to format the JSON string with 2 spaces for each level of indentation.
     # - ensure_ascii=False is used to ensure that the JSON string is not encoded in ASCII.
     json_output = json.dumps(output, indent=2, ensure_ascii=False)
-    #print(json_output)
+    print(json_output)
 
     return json_output
 

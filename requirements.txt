@@ -8,3 +8,4 @@ langchain-community
 langchain-chroma 
 python-dotenv
 ragas
+langchain-ollama

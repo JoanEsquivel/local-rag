@@ -17,8 +17,9 @@ from get_embedding_function import get_embedding_function
 from langchain_chroma import Chroma
 
 
-CHROMA_PATH = "chroma"
-DATA_PATH = "data"
+CHROMA_PATH = "../chroma"
+DATA_PATH = "../data"
+COLLECTION_NAME = "local-bge-m3-567m"
 
 
 def main():
@@ -86,7 +87,7 @@ def split_documents(documents: list[Document]):
 def add_to_chroma(chunks: list[Document]):
     # Load the existing database.
     db = Chroma(
-        persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
+        persist_directory=CHROMA_PATH, embedding_function=get_embedding_function(), collection_name=COLLECTION_NAME
     )
 
     # Calculate Page IDs.
@@ -107,7 +108,7 @@ def add_to_chroma(chunks: list[Document]):
         print(f"👉 Adding new documents: {len(new_chunks)}")
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
         db.add_documents(new_chunks, ids=new_chunk_ids)
-        db.persist()
+        # db.persist()
     else:
         print("✅ No new documents to add")
 

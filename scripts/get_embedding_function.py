@@ -2,6 +2,7 @@
 import os
 #Used to get the embedding function.
 from langchain_openai import OpenAIEmbeddings
+from langchain_ollama import OllamaEmbeddings
 #Used to load environment variables from a .env file.
 from dotenv import load_dotenv
 
@@ -19,7 +20,21 @@ load_dotenv()
 # Embeddings are used in many applications, including natural language processing, computer vision, and recommendation systems.
 
 
+# def get_embedding_function():
+#     openai_api_key = os.environ.get("OPENAI_API_KEY")
+#     embeddings = OpenAIEmbeddings(model="text-embedding-3-large",openai_api_key=openai_api_key)
+#     return embeddings
+
 def get_embedding_function():
-    openai_api_key = os.environ.get("OPENAI_API_KEY")
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-large",openai_api_key=openai_api_key)
+    # Using BGE-M3 model through Ollama (running locally)
+    # Default Ollama server runs on http://localhost:11434
+    embeddings = OllamaEmbeddings(
+        model="bge-m3:567m",
+        base_url="http://localhost:11434"  # Default Ollama server URL
+    )
     return embeddings
+
+#todo
+# Install ollama embedding model
+# run it and confirm configurations
+# Test the scripts + tests
