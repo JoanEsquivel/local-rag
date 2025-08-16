@@ -134,41 +134,51 @@ You can optionally set environment variables under a `.env` file (not required f
 OPENAI_API_KEY="{your_openai_api_key}"
 ```
 
-## Architecture
+## How the RAG System Works
+
 ```mermaid
 graph TD
-    A["User Question (CLI arg)"] --> B[query.py]
-    B --> C{Chroma setup}
-    C -->|persist_directory| C1["CHROMA_PATH<br/>scripts: ../chroma<br/>root: chroma"]
-    C -->|collection_name| C2["local-bge-m3-567m"]
-    B --> D[get_embedding_function]
-    D -->|OllamaEmbeddings| D1["model: bge-m3:567m"]
-    D1 --> E["Embed query → 1024-dim vector"]
-    E --> F["Chroma.similarity_search_with_score(k=5)"]
-    F -->|hits > 0| G["Join page_content → context_text"]
-    F -->|hits == 0| Z1["No context → answer should say<br/>'I don't know based on provided context'"]
+    A["🙋 User asks a question<br/>python query.py 'What is pizza?'"] --> B["📄 query.py script starts"]
     
-    G --> H["ChatPromptTemplate (PROMPT_TEMPLATE)"]
-    H --> I["ChatOllama<br/>model: deepseek-r1:8b<br/>temp: 0"]
-    I --> J[model.invoke messages]
-    J --> K["clean_think_process()<br/>removes &lt;think&gt;...&lt;/think&gt;"]
-    K --> L["Build JSON:<br/>{ answer, retrieved_docs[] }"]
-    L --> M[print json_output]
+    B --> C["🗄️ Connect to Database<br/>(Chroma vector database)"]
+    C --> C1["📂 Find database folder<br/>scripts/: ../chroma<br/>root/: chroma"]
+    C --> C2["📋 Use collection: local-bge-m3-567m"]
+    
+    B --> D["🧠 Load AI Model for Search<br/>(Embedding Function)"]
+    D --> D1["🤖 Ollama BGE-M3 Model<br/>(Converts text to numbers)"]
+    
+    D1 --> E["🔢 Convert question to numbers<br/>(1024 dimensional vector)"]
+    E --> F["🔍 Search database for similar content<br/>(Find top 5 matches)"]
+    
+    F -->|Found documents| G["📝 Collect relevant text<br/>(Join all found content)"]
+    F -->|No documents found| Z1["❌ No relevant info found<br/>Answer: 'I don't know based on context'"]
+    
+    G --> H["📋 Prepare prompt template<br/>(Add context + question)"]
+    H --> I["🤖 Send to ChatGPT-like AI<br/>(DeepSeek R1 model)"]
+    I --> J["💭 AI generates answer"]
+    J --> K["🧹 Clean up AI thinking process<br/>(Remove internal reasoning)"]
+    K --> L["📊 Package final response<br/>{ answer: '...', docs: [...] }"]
+    L --> M["✅ Show result to user"]
 
-    %% Guard rails / failure branches
-    C -->|count == 0| Z2["Collection empty<br/>→ index first with database_setup.py"]
-    D1 -.->|dim mismatch vs collection| Z3["Different embedding than indexing<br/>→ use same model & collection"]
-    F -.->|PDF without text/OCR| Z4["Loader returned 0 docs/chunks"]
+    %% Common Problems
+    C -->|Database empty| Z2["⚠️ Database not set up<br/>Run: python database_setup.py"]
+    D1 -.->|Wrong model| Z3["⚠️ Different AI model used<br/>Must use same model for search & indexing"]
+    F -.->|Bad PDF| Z4["⚠️ PDF has no readable text<br/>Check if PDF is text-based"]
 
     %% Styling
-    classDef errorNode fill:#ffebee,stroke:#f44336,stroke-width:2px
-    classDef processNode fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
-    classDef dataNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    classDef errorNode fill:#ffebee,stroke:#f44336,stroke-width:2px,color:#000
+    classDef processNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px,color:#000
+    classDef dataNode fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000
+    classDef userNode fill:#e3f2fd,stroke:#2196f3,stroke-width:3px,color:#000
     
     class Z1,Z2,Z3,Z4 errorNode
     class B,D,F,H,I,J,K processNode
-    class C1,C2,D1,E,G,L,M dataNode
+    class C,C1,C2,D1,E,G,L,M dataNode
+    class A,M userNode
 ```
+
+### 🔄 **Simple Flow Summary:**
+1. **User asks** → 2. **Find similar docs** → 3. **Ask AI with context** → 4. **Return clean answer**
 
 ## Database Setup
 
