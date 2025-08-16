@@ -31,7 +31,7 @@ def get_chroma_path():
 
 # The path to the Chroma database.
 CHROMA_PATH = get_chroma_path()
-COLLECTION_NAME = "local-bge-m3-567m"
+COLLECTION_NAME = "qwen2.5-7b-instruct"
 
 # The prompt template for the chat openAI model.
 PROMPT_TEMPLATE = """
@@ -118,7 +118,7 @@ def query_rag(query_text: str):
         # - Temperature is the randomness of the model. 0 is deterministic, 1 is random.
         temperature=0,
         # - Model name. 
-        model="deepseek-r1:8b",
+        model="qwen2.5:7b-instruct",
         # If not set in your environment, you can hardcode your API key here:
         # openai_api_key=os.environ.get("OPENAI_API_KEY")
         verbose=True

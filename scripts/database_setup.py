@@ -19,7 +19,7 @@ from langchain_chroma import Chroma
 
 CHROMA_PATH = "../chroma"
 DATA_PATH = "../data"
-COLLECTION_NAME = "local-bge-m3-567m"
+COLLECTION_NAME = "qwen2.5-7b-instruct"
 
 
 def main():

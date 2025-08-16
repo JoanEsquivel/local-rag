@@ -13,7 +13,7 @@ If you want to get started quickly:
 1. **Install Ollama** and pull required models:
    ```bash
    ollama pull bge-m3:567m
-   ollama pull deepseek-r1:8b
+   ollama pull qwen2.5:7b-instruct
    ```
 
 2. **Set up the project**:

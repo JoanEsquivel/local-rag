@@ -15,7 +15,7 @@ import json
 
 @pytest.fixture
 def langchain_llm_ragas_wrapper():
-    llm = ChatOllama(model="deepseek-r1:8b", temperature=0)
+    llm = ChatOllama(model="qwen2.5:7b-instruct", temperature=0)
     langchain_llm = LangchainLLMWrapper(llm)
     return langchain_llm
 
@@ -23,7 +23,7 @@ def langchain_llm_ragas_wrapper():
 # This is neccesary for the response relevancy metric. It needs to be part of the metric analysis since it uses the embeddings to compare the response with the retrieved context.
 @pytest.fixture
 def get_embeddings():
-    return OllamaEmbeddings(model="bge-m3:567m", base_url="http://localhost:11434")
+    return OllamaEmbeddings(model="qwen2.5:7b-instruct", base_url="http://localhost:11434")
 
 # Get Question
 # This is a fixture that returns the question from the JSON file.
