@@ -29,7 +29,7 @@ def get_embedding_function():
     # Using BGE-M3 model through Ollama (running locally)
     # Default Ollama server runs on http://localhost:11434
     embeddings = OllamaEmbeddings(
-        model="qwen2.5:7b-instruct",
+        model="bge-m3:567m",
         base_url="http://localhost:11434"  # Default Ollama server URL
     )
     return embeddings
