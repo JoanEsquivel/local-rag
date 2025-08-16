@@ -180,6 +180,79 @@ graph TD
 ### 🔄 **Simple Flow Summary:**
 1. **User asks** → 2. **Find similar docs** → 3. **Ask AI with context** → 4. **Return clean answer**
 
+## RAGAS Evaluation Metrics
+
+RAGAS helps us measure how good our RAG system is by testing 4 key areas. Think of it like a report card for your AI:
+
+```mermaid
+graph TD
+    A["🧪 RAGAS Evaluation Process"] --> B["📊 4 Quality Metrics"]
+    
+    B --> C1["🎯 Context Precision<br/>Are the retrieved docs relevant?"]
+    B --> C2["🔍 Context Recall<br/>Did we find all the important info?"]
+    B --> C3["✅ Faithfulness<br/>Is the answer truthful to the docs?"]
+    B --> C4["📝 Response Relevancy<br/>Does the answer match the question?"]
+    
+    %% Context Precision Flow
+    C1 --> CP1["📥 Input: Question + Retrieved Docs"]
+    CP1 --> CP2["🤖 AI judges: Which docs help answer?"]
+    CP2 --> CP3["📊 Score: Relevant docs ÷ Total docs"]
+    CP3 --> CP4["🟢 High Score (0.8-1.0): Most docs are useful<br/>🟡 Medium Score (0.5-0.7): Some docs help<br/>🔴 Low Score (0.0-0.4): Many irrelevant docs"]
+    
+    %% Context Recall Flow  
+    C2 --> CR1["📥 Input: Question + Retrieved Docs + Ground Truth"]
+    CR1 --> CR2["🤖 AI checks: Did we find all key info?"]
+    CR2 --> CR3["📊 Score: Found key points ÷ Total key points"]
+    CR3 --> CR4["🟢 High Score (0.8-1.0): Found most important info<br/>🟡 Medium Score (0.5-0.7): Missing some details<br/>🔴 Low Score (0.0-0.4): Missed lots of key info"]
+    
+    %% Faithfulness Flow
+    C3 --> F1["📥 Input: Question + Retrieved Docs + AI Answer"]
+    F1 --> F2["🤖 AI checks: Are facts in answer from docs?"]
+    F2 --> F3["📊 Score: Verified claims ÷ Total claims"]
+    F3 --> F4["🟢 High Score (0.8-1.0): Answer sticks to facts<br/>🟡 Medium Score (0.5-0.7): Some unsupported claims<br/>🔴 Low Score (0.0-0.4): Answer makes things up"]
+    
+    %% Response Relevancy Flow
+    C4 --> RR1["📥 Input: Question + AI Answer"]
+    RR1 --> RR2["🤖 AI checks: Does answer address question?"]
+    RR2 --> RR3["📊 Score: Relevant parts ÷ Total answer"]
+    RR3 --> RR4["🟢 High Score (0.8-1.0): Answer directly addresses question<br/>🟡 Medium Score (0.5-0.7): Partially answers question<br/>🔴 Low Score (0.0-0.4): Answer is off-topic"]
+
+    %% Styling
+    classDef metricNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px,color:#000
+    classDef processNode fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000
+    classDef scoreNode fill:#e3f2fd,stroke:#2196f3,stroke-width:2px,color:#000
+    classDef resultNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#000
+    
+    class C1,C2,C3,C4 metricNode
+    class CP1,CR1,F1,RR1,CP2,CR2,F2,RR2 processNode
+    class CP3,CR3,F3,RR3 scoreNode
+    class CP4,CR4,F4,RR4 resultNode
+```
+
+### 📊 **What Each Metric Tests:**
+
+| Metric | What it asks | What you need | Good Score means | Bad Score means |
+|--------|-------------|---------------|------------------|-----------------|
+| **🎯 Context Precision** | "Are these docs helpful?" | Question + Retrieved docs | Search found useful info | Search returned junk |
+| **🔍 Context Recall** | "Did we find everything?" | Question + Docs + Truth | Found most key details | Missed important info |
+| **✅ Faithfulness** | "Is the answer honest?" | Question + Docs + Answer | AI stuck to the facts | AI made things up |
+| **📝 Response Relevancy** | "Does this answer the question?" | Question + Answer | Direct, focused answer | Off-topic response |
+
+### 🎯 **Quick Interpretation Guide:**
+
+- **Score 0.8-1.0**: 🟢 **Excellent** - System working great!
+- **Score 0.5-0.7**: 🟡 **Needs work** - Some issues to fix
+- **Score 0.0-0.4**: 🔴 **Poor** - Major problems, needs attention
+
+### 🔧 **Common Issues & Solutions:**
+
+| Low Score In | Probable Cause | How to Fix |
+|-------------|----------------|------------|
+| **Context Precision** | Search returning irrelevant docs | Improve embeddings, adjust chunk size |
+| **Context Recall** | Missing important documents | Add more docs, improve search parameters |
+| **Faithfulness** | AI hallucinating facts | Better prompts, check retrieved context |
+| **Response Relevancy** | AI going off-topic | Improve prompt template, tune AI model |
+
 ## Database Setup
 
 Before using the RAG system, you need to set up the vector database with your documents:
