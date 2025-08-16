@@ -2,6 +2,7 @@
 import argparse
 #Used to handle JSON data in Python scripts.
 import json
+import os
 #Used to create a Chroma database.
 from langchain_chroma import Chroma  
 #Used to create a chat prompt template.
@@ -11,15 +12,25 @@ from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
 #Used to load environment variables from a .env file.
 from dotenv import load_dotenv
-import os
 #Used to get the embedding function.
-from get_embedding_function import get_embedding_function
+try:
+    from get_embedding_function import get_embedding_function
+except ImportError:
+    from scripts.get_embedding_function import get_embedding_function
 
 # Load the environment variables from the .env file.
 load_dotenv()
 
+# Dynamic path resolution - works from both project root and scripts directory
+def get_chroma_path():
+    current_dir = os.getcwd()
+    if current_dir.endswith('scripts'):
+        return "../chroma"
+    else:
+        return "chroma"
+
 # The path to the Chroma database.
-CHROMA_PATH = "../chroma"
+CHROMA_PATH = get_chroma_path()
 COLLECTION_NAME = "local-bge-m3-567m"
 
 # The prompt template for the chat openAI model.

@@ -202,6 +202,8 @@ Example response:
 
 The project includes RAGAS evaluation tests for measuring RAG system performance:
 
+> **Note**: Tests require an OpenAI API key for RAGAS evaluation metrics. Set `OPENAI_API_KEY` in your environment or `.env` file.
+
 1. **Set the PYTHONPATH environment variable**:
    ```bash
    export PYTHONPATH="${PYTHONPATH}:/path/to/your/personalRag"
