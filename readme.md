@@ -136,46 +136,93 @@ OPENAI_API_KEY="{your_openai_api_key}"
 
 ## How the RAG System Works
 
+This diagram shows the complete RAG (Retrieval-Augmented Generation) workflow using your current setup with **BGE-M3 embeddings** and **Qwen2.5 LLM**, both running locally via Ollama.
+
 ```mermaid
 graph TD
     A["🙋 User asks a question<br/>python query.py 'What is pizza?'"] --> B["📄 query.py script starts"]
     
-    B --> C["🗄️ Connect to Database<br/>(Chroma vector database)"]
+    B --> C["🗄️ Connect to ChromaDB<br/>(Local Vector Database)"]
     C --> C1["📂 Find database folder<br/>scripts/: ../chroma<br/>root/: chroma"]
-    C --> C2["📋 Use collection: local-bge-m3-567m"]
+    C --> C2["📋 Use collection: qwen2.5-7b-instruct<br/>(Named after LLM model)"]
     
-    B --> D["🧠 Load AI Model for Search<br/>(Embedding Function)"]
-    D --> D1["🤖 Ollama BGE-M3 Model<br/>(Converts text to numbers)"]
+    B --> D["🧠 Load Embedding Model<br/>(Converts text to numbers)"]
+    D --> D1["🤖 BGE-M3 Model via Ollama<br/>Runs locally on localhost:11434<br/>Creates 1024-dimensional vectors"]
     
-    D1 --> E["🔢 Convert question to numbers<br/>(1024 dimensional vector)"]
-    E --> F["🔍 Search database for similar content<br/>(Find top 5 matches)"]
+    D1 --> E["🔢 Convert user question to vector<br/>Example: 'What is pizza?' → [0.1, -0.5, 0.3, ...]<br/>(1024 numbers representing meaning)"]
     
-    F -->|Found documents| G["📝 Collect relevant text<br/>(Join all found content)"]
+    E --> F["🔍 Vector Similarity Search<br/>Compare question vector with stored document vectors<br/>Find top 5 most similar chunks"]
+    
+    F -->|Found documents| G["📝 Collect relevant text chunks<br/>Combine all found content into context"]
     F -->|No documents found| Z1["❌ No relevant info found<br/>Answer: 'I don't know based on context'"]
     
-    G --> H["📋 Prepare prompt template<br/>(Add context + question)"]
-    H --> I["🤖 Send to ChatGPT-like AI<br/>(DeepSeek R1 model)"]
-    I --> J["💭 AI generates answer"]
-    J --> K["🧹 Clean up AI thinking process<br/>(Remove internal reasoning)"]
-    K --> L["📊 Package final response<br/>{ answer: '...', docs: [...] }"]
-    L --> M["✅ Show result to user"]
+    G --> H["📋 Create AI prompt<br/>Context: [retrieved chunks]<br/>Question: [user question]"]
+    
+    H --> I["🤖 Send to Qwen2.5 Model<br/>(7B parameter LLM via Ollama)<br/>Local AI that reads and responds"]
+    
+    I --> J["💭 AI processes context + question<br/>Generates response with <think> tags<br/>(Internal reasoning)"]
+    
+    J --> K["🧹 Clean response<br/>Remove <think>...</think> blocks<br/>Keep only final answer"]
+    
+    K --> L["📊 Package response<br/>JSON: {answer: '...', docs: [...]}"]
+    L --> M["✅ Display result to user"]
 
-    %% Common Problems
+    %% Database Setup Process (Background)
+    N["📚 Database Setup Process<br/>(database_setup.py)"] --> N1["📄 Load PDFs from data/ folder<br/>Using PyPDFDirectoryLoader"]
+    N1 --> N2["✂️ Split into chunks<br/>800 characters each, 80 overlap<br/>Creates manageable pieces"]
+    N2 --> N3["🔢 Convert chunks to vectors<br/>Using same BGE-M3 model<br/>Store in ChromaDB"]
+    N3 --> N4["💾 Save to ChromaDB<br/>Each chunk gets unique ID<br/>Ready for similarity search"]
+
+    %% Key Concepts for QA Engineers
+    subgraph concepts["🎓 Key Concepts for QA Engineers"]
+        K1["🔤 Embeddings:<br/>Numbers that represent text meaning<br/>Similar texts = similar numbers"]
+        K2["🗃️ ChromaDB:<br/>Database optimized for vector search<br/>Like Google for your documents"]
+        K3["🎯 Similarity Search:<br/>Find documents with similar meaning<br/>Not exact word matches"]
+        K4["🤖 LLM (Large Language Model):<br/>AI that reads context and answers<br/>Like ChatGPT but running locally"]
+        K5["📊 Vector Dimensions:<br/>BGE-M3 creates 1024 numbers per text<br/>More dimensions = better understanding"]
+    end
+
+    %% Common Issues
     C -->|Database empty| Z2["⚠️ Database not set up<br/>Run: python database_setup.py"]
-    D1 -.->|Wrong model| Z3["⚠️ Different AI model used<br/>Must use same model for search & indexing"]
-    F -.->|Bad PDF| Z4["⚠️ PDF has no readable text<br/>Check if PDF is text-based"]
+    D1 -.->|Model mismatch| Z3["⚠️ Different embedding models<br/>Must use BGE-M3 for both indexing & search"]
+    F -.->|Bad PDF quality| Z4["⚠️ PDF text extraction failed<br/>Check if PDF contains readable text"]
+    I -.->|Ollama not running| Z5["⚠️ Cannot reach Ollama<br/>Start: ollama serve"]
 
     %% Styling
     classDef errorNode fill:#ffebee,stroke:#f44336,stroke-width:2px,color:#000
     classDef processNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px,color:#000
     classDef dataNode fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000
     classDef userNode fill:#e3f2fd,stroke:#2196f3,stroke-width:3px,color:#000
+    classDef conceptNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#000
+    classDef setupNode fill:#e0f2f1,stroke:#009688,stroke-width:2px,color:#000
     
-    class Z1,Z2,Z3,Z4 errorNode
+    class Z1,Z2,Z3,Z4,Z5 errorNode
     class B,D,F,H,I,J,K processNode
     class C,C1,C2,D1,E,G,L,M dataNode
     class A,M userNode
+    class K1,K2,K3,K4,K5 conceptNode
+    class N,N1,N2,N3,N4 setupNode
 ```
+
+### 🎓 Understanding RAG for QA Engineers
+
+**RAG (Retrieval-Augmented Generation)** combines two key technologies:
+
+1. **🔍 Retrieval**: Finding relevant information from your documents
+2. **💭 Generation**: Using AI to create answers based on that information
+
+**Key Components:**
+
+- **📊 Embeddings**: Convert text into numbers (vectors) that capture meaning. Similar concepts have similar numbers.
+- **🗃️ ChromaDB**: A specialized database for storing and searching these vectors efficiently.
+- **🎯 Similarity Search**: Instead of exact keyword matching, finds documents with similar *meaning*.
+- **🤖 LLM**: The AI that reads the retrieved context and generates human-like answers.
+
+**Why This Approach Works:**
+- Your AI answers are grounded in your specific documents
+- Reduces "hallucination" (making up facts)
+- Works with any document type (PDFs, text files, etc.)
+- Runs completely locally (no data sent to external APIs)
 
 ### 🔄 **Simple Flow Summary:**
 1. **User asks** → 2. **Find similar docs** → 3. **Ask AI with context** → 4. **Return clean answer**
