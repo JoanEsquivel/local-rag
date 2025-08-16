@@ -30,6 +30,30 @@ ENABLE_METADATA_ENRICHMENT=true   # Add extra metadata
 BATCH_SIZE=100                    # Batch size for database operations
 ```
 
+### RAG Query Configuration
+
+```env
+# LLM Provider for RAG queries
+RAG_LLM_PROVIDER=ollama           # "ollama" or "openai"
+OLLAMA_LLM_MODEL=qwen2.5:7b-instruct  # Ollama model for queries
+OPENAI_LLM_MODEL=gpt-4o-mini      # OpenAI model for queries
+
+# Retrieval settings
+RETRIEVAL_K=5                     # Number of documents to retrieve
+SIMILARITY_THRESHOLD=0.0          # Minimum similarity score
+MAX_CONTEXT_LENGTH=4000           # Maximum context length
+
+# LLM parameters
+LLM_TEMPERATURE=0.0               # Model temperature (0.0-2.0)
+LLM_MAX_TOKENS=                   # Maximum tokens (optional)
+
+# Query processing
+ENABLE_CONTEXT_FILTERING=true     # Filter low-similarity documents
+ENABLE_RESPONSE_CLEANING=true     # Clean model artifacts
+QUERY_OUTPUT_FORMAT=json          # Default output format
+INCLUDE_DEBUG_INFO=false          # Include debug information
+```
+
 ### Ollama Configuration (Local)
 
 ```env
