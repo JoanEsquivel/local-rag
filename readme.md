@@ -39,6 +39,8 @@ If you want to get started quickly:
 - [Installation](#installation)
 - [Ollama Setup](#ollama-setup)
 - [Environment Variables](#environment-variables)
+- [How the RAG System Works](#how-the-rag-system-works)
+- [Architecture Improvements](#️-architecture-improvements)
 - [Database Setup](#database-setup)
 - [RAG System Usage](#rag-system-usage)
 - [Testing](#testing)
@@ -112,8 +114,8 @@ This project uses Ollama for local embeddings and language model inference. Foll
    # Install the embedding model (BGE-M3)
    ollama pull bge-m3:567m
    
-   # Install the language model (DeepSeek R1)
-   ollama pull deepseek-r1:8b
+   # Install the language model (Qwen2.5 - used by this project)
+   ollama pull qwen2.5:7b-instruct
    ```
 
 3. **Verify Ollama is running**:
@@ -127,12 +129,35 @@ This project uses Ollama for local embeddings and language model inference. Foll
 
 ## Environment Variables
 
-You can optionally set environment variables under a `.env` file (not required for Ollama setup):
+The system now supports flexible configuration through environment variables. Create a `.env` file in the project root for customization:
 
+### 🔧 Basic Configuration (Optional)
+
+```env
+# Embedding provider: "ollama" (default) or "openai"
+EMBEDDING_PROVIDER=ollama
+
+# Ollama configuration (default values shown)
+OLLAMA_EMBEDDING_MODEL=bge-m3:567m
+OLLAMA_BASE_URL=http://localhost:11434
+
+# OpenAI configuration (only needed if using OpenAI)
+# OPENAI_API_KEY=your_openai_api_key_here
+# OPENAI_EMBEDDING_MODEL=text-embedding-3-large
 ```
-# Optional: Only needed if switching back to OpenAI embeddings
-OPENAI_API_KEY="{your_openai_api_key}"
-```
+
+### 🎯 Benefits of New Architecture
+
+- **🛡️ Error Handling**: Automatic health checks and clear error messages
+- **⚙️ Flexible Configuration**: Easy switching between local and cloud embeddings  
+- **📊 Better Logging**: Visibility into what models are being used
+- **🔄 Environment-Based**: Different configurations for development/testing/production
+
+### 📚 Full Configuration Guide
+
+See `ENVIRONMENT_VARIABLES.md` for complete configuration options and examples.
+
+**Note**: No configuration is required for default Ollama setup - it works out of the box!
 
 ## How the RAG System Works
 
@@ -226,6 +251,56 @@ graph TD
 
 ### 🔄 **Simple Flow Summary:**
 1. **User asks** → 2. **Find similar docs** → 3. **Ask AI with context** → 4. **Return clean answer**
+
+## 🏗️ Architecture Improvements
+
+The embedding system has been enhanced with enterprise-grade features while maintaining 100% backward compatibility:
+
+### ✅ **Enhanced Features**
+
+#### **🛡️ Robust Error Handling**
+- **Automatic health checks** for Ollama server connectivity
+- **Model validation** - confirms required models are installed
+- **Clear error messages** with specific resolution steps
+- **Graceful fallbacks** and timeout handling
+
+#### **⚙️ Flexible Configuration**
+- **Environment-based** configuration for different deployments
+- **Multiple providers** - switch between Ollama (local) and OpenAI (cloud)
+- **Runtime model selection** without code changes
+- **Zero-config defaults** - works out of the box
+
+#### **📊 Observability & Debugging**
+- **Structured logging** with appropriate log levels
+- **Model usage visibility** - see which models are active
+- **Performance monitoring** - track embedding generation
+- **Debug-friendly** error traces
+
+#### **🔧 Developer Experience**
+- **Type hints** for better IDE support
+- **Comprehensive documentation** with examples
+- **Clean separation** of concerns
+- **Easy testing** and mocking capabilities
+
+### 🎯 **Backward Compatibility Guaranteed**
+
+```python
+# ✅ Original code continues to work unchanged
+from scripts.get_embedding_function import get_embedding_function
+embeddings = get_embedding_function()  # Still works exactly the same
+
+# 🚀 New capabilities available when needed
+from scripts.get_embedding_function import get_embedding_function_new
+embeddings = get_embedding_function_new(provider="openai")  # Switch providers easily
+```
+
+### 🔬 **For QA Engineers**
+
+The improved architecture provides:
+- **Better error diagnostics** when tests fail
+- **Environment isolation** for different test scenarios  
+- **Configurable backends** for testing various models
+- **Health check endpoints** for monitoring test infrastructure
 
 ## RAGAS Evaluation Metrics
 
