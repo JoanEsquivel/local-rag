@@ -134,6 +134,42 @@ You can optionally set environment variables under a `.env` file (not required f
 OPENAI_API_KEY="{your_openai_api_key}"
 ```
 
+## Architecture
+```mermaid
+graph TD
+    A["User Question (CLI arg)"] --> B[query.py]
+    B --> C{Chroma setup}
+    C -->|persist_directory| C1["CHROMA_PATH<br/>scripts: ../chroma<br/>root: chroma"]
+    C -->|collection_name| C2["local-bge-m3-567m"]
+    B --> D[get_embedding_function]
+    D -->|OllamaEmbeddings| D1["model: bge-m3:567m"]
+    D1 --> E["Embed query → 1024-dim vector"]
+    E --> F["Chroma.similarity_search_with_score(k=5)"]
+    F -->|hits > 0| G["Join page_content → context_text"]
+    F -->|hits == 0| Z1["No context → answer should say<br/>'I don't know based on provided context'"]
+    
+    G --> H["ChatPromptTemplate (PROMPT_TEMPLATE)"]
+    H --> I["ChatOllama<br/>model: deepseek-r1:8b<br/>temp: 0"]
+    I --> J[model.invoke messages]
+    J --> K["clean_think_process()<br/>removes &lt;think&gt;...&lt;/think&gt;"]
+    K --> L["Build JSON:<br/>{ answer, retrieved_docs[] }"]
+    L --> M[print json_output]
+
+    %% Guard rails / failure branches
+    C -->|count == 0| Z2["Collection empty<br/>→ index first with database_setup.py"]
+    D1 -.->|dim mismatch vs collection| Z3["Different embedding than indexing<br/>→ use same model & collection"]
+    F -.->|PDF without text/OCR| Z4["Loader returned 0 docs/chunks"]
+
+    %% Styling
+    classDef errorNode fill:#ffebee,stroke:#f44336,stroke-width:2px
+    classDef processNode fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef dataNode fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    
+    class Z1,Z2,Z3,Z4 errorNode
+    class B,D,F,H,I,J,K processNode
+    class C1,C2,D1,E,G,L,M dataNode
+```
+
 ## Database Setup
 
 Before using the RAG system, you need to set up the vector database with your documents:
