@@ -181,14 +181,13 @@ def get_embedding_function(
         )
 
 
+# Store the new function under a different name for tests
+get_embedding_function_new = get_embedding_function
+
 # For backward compatibility, keep original function behavior
 def get_embedding_function_legacy():
     """Legacy function for backward compatibility - maintains original behavior"""
     return get_ollama_embeddings()  # Original behavior was to return Ollama embeddings
 
-
-# Store the new function under a different name
-get_embedding_function_new = get_embedding_function
-
-# Override with legacy version to maintain compatibility
+# Override with legacy version to maintain compatibility for existing code
 get_embedding_function = get_embedding_function_legacy

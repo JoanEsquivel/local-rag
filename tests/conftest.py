@@ -41,7 +41,7 @@ from unittest.mock import Mock, patch
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import project modules using existing infrastructure
-from scripts.get_embedding_function import get_embedding_function, EmbeddingConfig
+from scripts.get_embedding_function import get_embedding_function_new as get_embedding_function, EmbeddingConfig
 from scripts.query import QueryConfig, LLMManager
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_ollama import ChatOllama, OllamaEmbeddings
